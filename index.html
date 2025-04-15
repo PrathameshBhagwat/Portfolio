@@ -82,7 +82,7 @@
                 <img src="/assets/Hero_Image.png" alt="">
                 <!-- This is used to make the card behind my image -->
                 <h2>Check About Me</h2>
-                <a href="#">Know Me</a>
+                <a href="https://drive.google.com/drive/folders/1DHyjBb7p83LrXOEkCRw-f-9W0vM-gJiW?usp=drive_link">Know Me</a>
             </div>
         </div>
         <div class="about-content">
@@ -308,21 +308,7 @@
         </div>
     </footer>
 <script>
-    let imgBX = document.querySelectorAll('.imgBX');
-    let contentBx= document.querySelectorAll('.content-box');
-    for (let i=0; i<imgBX.length; i++){
-        imgBX[i].addEventListener('mouseover',function(){
-            for(let i=0; i<contentBx.length; i++ ){
-                contentBx[i].className='contentBx'
-            }
-            document.getElementById(this.dataset.id).className='contentBx active';
-
-            for(let i=0; i<imgBX.length; i++){
-                imgBX[i].className='imgBX';
-            }
-            this.className= 'imgBX active';
-        })
-    }
+   
 </script>
 </body>
 
