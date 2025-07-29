@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="style.css">
     <!-- Linking this is for Icons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    
+
     <!-- Linking the JS page to website -->
     <script src="script.js"></script>
+    <link rel="preload" as="image" href="/assets/Hero_Image.webp" type="image/webp" fetchpriority="high" />
+
     <title>Prathamesh Bhagwat | Portfolio</title>
 </head>
 
@@ -45,32 +47,41 @@
     <section class="home" id="home">
         <div class="home-content">
             <h1>Hi I am <span>Prathamesh</span></h1>
-            
+
 
             <!-- This is the content of our home page -->
             <p>🚀 Turning ideas into intelligent solutions. <br>
                 Passionate about AI, Web Dev, and Tech That Matters.
-                <p>I’m a third-year AI & Data Science student building smart, scalable, and stunning digital products. Whether it’s creating responsive web apps, training powerful models, or just solving fun coding problems — I’m all in.</p>
+            <p>I’m a third-year AI & Data Science student building smart, scalable, and stunning digital products.
+                Whether it’s creating responsive web apps, training powerful models, or just solving fun coding problems
+                — I’m all in.</p>
             </p>
-                
+
             <!-- This is will create the buttons on home page -->
             <div class="btn-box">
-                <a href="/assets/Prathamesh_Bhagwat_Resume.pdf" class="btn" download="Prathamesh_Bhagwat_Resume.pdf">Check Out Cv</a>
+                <a href="/assets/Prathamesh_Bhagwat_Resume.pdf" class="btn"
+                    download="Prathamesh_Bhagwat_Resume.pdf">Check Out Cv</a>
                 <a href="#contact" class="btn">Let's Talk</a>
             </div>
 
             <!-- Hyperlinks to social media icons -->
             <div class="home-li">
                 <a href="https://www.facebook.com/share/1UcmqF9gxy/"><i class='bx bxl-facebook'></i></a>
-                <a href="https://www.instagram.com/prathamesh_bhagwat07?igsh=MWx5cnkwZDl6c2EzbQ=="><i class='bx bxl-instagram'></i></a>
+                <a href="https://www.instagram.com/prathamesh_bhagwat07?igsh=MWx5cnkwZDl6c2EzbQ=="><i
+                        class='bx bxl-instagram'></i></a>
                 <a href="https://leetcode.com/u/Prathamesh_Bhagwat_31/"><i class='bx bx-code'></i>
-                <a href="https://www.linkedin.com/in/prathamesh-bhagwat-52b651258/"><i class='bx bxl-linkedin'></i></a>
-                <a href="https://github.com/PrathameshBhagwat"><i class='bx bxl-github'></i></a>
+                    <a href="https://www.linkedin.com/in/prathamesh-bhagwat-52b651258/"><i
+                            class='bx bxl-linkedin'></i></a>
+                    <a href="https://github.com/PrathameshBhagwat"><i class='bx bxl-github'></i></a>
             </div>
         </div>
         <aside>
             <div class="home-img">
-                <img src="/assets/Hero_Image.png" alt="">
+                <picture>
+                    <source srcset="/assets/Hero_Image.webp" type="image/webp" />
+                    <img src="/assets/Hero_Image.webp" alt="Hero" width="600" height="800" loading="eager"
+                        fetchpriority="high" />
+                </picture>
             </div>
         </aside>
     </section>
@@ -79,17 +90,22 @@
         <h2 class="heading-abt">About <span>Me</span></h2>
         <div class="about-img-div">
             <div class="about-img-content">
-                <img src="/assets/Hero_Image.png" alt="">
+                <img src="/assets/Hero_Image.webp" alt="About Image" type="image/webp">
                 <!-- This is used to make the card behind my image -->
                 <h2>Check About Me</h2>
-                <a href="https://drive.google.com/drive/folders/1DHyjBb7p83LrXOEkCRw-f-9W0vM-gJiW?usp=drive_link">Know Me</a>
+                <a href="https://drive.google.com/drive/folders/1DHyjBb7p83LrXOEkCRw-f-9W0vM-gJiW?usp=drive_link">Know
+                    Me</a>
             </div>
         </div>
         <div class="about-content">
             <h3>Who i am ?</h3>
-            <p>I'm Prathamesh, a third-year student pursuing Artificial Intelligence & Data Science. I’m passionate about solving real-world problems through smart, scalable, and efficient technology. From crafting dynamic web applications to experimenting with AI models and data-driven systems, I love turning complex ideas into practical solutions. <br>
+            <p>I'm Prathamesh, a third-year student pursuing Artificial Intelligence & Data Science. I’m passionate
+                about solving real-world problems through smart, scalable, and efficient technology. From crafting
+                dynamic web applications to experimenting with AI models and data-driven systems, I love turning complex
+                ideas into practical solutions. <br>
 
-                Whether I’m building intuitive user interfaces, diving into backend logic, or optimizing ML workflows — I’m always learning, building, and pushing boundaries.</p>
+                Whether I’m building intuitive user interfaces, diving into backend logic, or optimizing ML workflows —
+                I’m always learning, building, and pushing boundaries.</p>
             <h2>click on Image to learn more</h2>
         </div>
     </section>
@@ -104,14 +120,16 @@
                         <div class="edu-content">
                             <div class="edu-year"><i class='bx bxs-calendar'></i>2015-2020</div>
                             <h3>K.V.K.High School,Kalamb</h3>
-                            <p>S.S.C-87.20% <br>Completed 10th grade with a keen interest in mathematics and technology. Participated in science fairs and basic robotics clubs. </p>
+                            <p>S.S.C-87.20% <br>Completed 10th grade with a keen interest in mathematics and technology.
+                                Participated in science fairs and basic robotics clubs. </p>
                         </div>
                     </div>
                     <div class="eduction-content">
                         <div class="edu-content">
                             <div class="edu-year"><i class='bx bxs-calendar'></i>2020-2022</div>
                             <h3>G.R.P.Sabnis Juniour College,Pune</h3>
-                            <p>H.S.C-71.83% <br>Studied core science subjects with a focus on Computer Science. Built a strong foundation in logic, problem-solving, and programming fundamentals.</p>
+                            <p>H.S.C-71.83% <br>Studied core science subjects with a focus on Computer Science. Built a
+                                strong foundation in logic, problem-solving, and programming fundamentals.</p>
                         </div>
                     </div>
                     <div class="eduction-content">
@@ -119,11 +137,11 @@
                             <div class="edu-year"><i class='bx bxs-calendar'></i>2023-Present</div>
                             <h3>Eagle Vision Learning World | Udemy</h3>
                             <p>
-                                <ul>
+                            <ul>
                                 <li>Built full-stack applications using HTML, CSS, JavaScript, and React.</li>
 
-                                 <li>Learned backend fundamentals including Node.js and API integration. </li>
-                                
+                                <li>Learned backend fundamentals including Node.js and API integration. </li>
+
                                 <li>Practiced Data Structures & Algorithms with Python and C++ for problem-solving.</li>
                             </ul>
                             </p>
@@ -142,7 +160,7 @@
                             <h3>SPPU-First Year</h3>
                             <h2>CGPA-8.32</h2>
                             <p>Focused on the fundamentals of programming, engineering mathematics, and problem-solving.
-                                </p>
+                            </p>
                         </div>
                     </div>
                     <div class="eduction-content">
@@ -150,7 +168,8 @@
                             <div class="edu-year"><i class='bx bxs-calendar'></i>2023-2024</div>
                             <h3>SPPU-Second Year</h3>
                             <h2>CGPA-9.04</h2>
-                            <p>Dived into core subjects like Machine Learning, DBMS, OOPs with Java, and Computer Networks.</p>
+                            <p>Dived into core subjects like Machine Learning, DBMS, OOPs with Java, and Computer
+                                Networks.</p>
                         </div>
                     </div>
                     <div class="eduction-content">
@@ -158,7 +177,8 @@
                             <div class="edu-year"><i class='bx bxs-calendar'></i>2024-2025</div>
                             <h3>SPPU-Third Year</h3>
                             <h2>CGPA-9.28</h2>
-                            <p style="font-size: 1.7rem;">Gained hands-on experience with advanced AI tools and frameworks.
+                            <p style="font-size: 1.7rem;">Gained hands-on experience with advanced AI tools and
+                                frameworks.
                             </p>
                         </div>
                     </div>
@@ -191,7 +211,7 @@
                         </div>
 
                         <div class="progress">
-                            <h3>DataBase and Management  <span>80%</span></h3>
+                            <h3>DataBase and Management <span>80%</span></h3>
                             <div class="bar"><span></span></div>
                         </div>
                     </div>
@@ -230,17 +250,22 @@
                 <img src="assets/iot.jpg" alt="">
                 <div class="project-layer">
                     <h4>IoT Virtual Doctor</h4>
-                    <p>An intelligent healthcare assistant that remotely monitors patient vitals using IoT sensors and sends real-time health data to doctors.
-                        Combines hardware (like pulse, temperature sensors) with cloud integration to offer instant alerts and recommendations — aiming to support early diagnosis and remote patient care.                      
-                        </p>
-                    <a href="https://drive.google.com/drive/folders/13tAolZj9d590GxEEW0C96zicgX8Ri5Lj?usp=drive_link"><i class='bx bx-link-external'></i></a>
+                    <p>An intelligent healthcare assistant that remotely monitors patient vitals using IoT sensors and
+                        sends real-time health data to doctors.
+                        Combines hardware (like pulse, temperature sensors) with cloud integration to offer instant
+                        alerts and recommendations — aiming to support early diagnosis and remote patient care.
+                    </p>
+                    <a href="https://drive.google.com/drive/folders/13tAolZj9d590GxEEW0C96zicgX8Ri5Lj?usp=drive_link"><i
+                            class='bx bx-link-external'></i></a>
                 </div>
             </div>
             <div class="project-box">
                 <img src="assets/naveye.png" alt="">
                 <div class="project-layer">
                     <h4>NavEye</h4>
-                    <p>NavEye is a wearable navigation system designed to assist visually impaired individuals using ultrasonic sensors and voice feedback. It detects nearby obstacles and guides users safely through their environment in real-time.</p>
+                    <p>NavEye is a wearable navigation system designed to assist visually impaired individuals using
+                        ultrasonic sensors and voice feedback. It detects nearby obstacles and guides users safely
+                        through their environment in real-time.</p>
                     <a href=""><i class='bx bx-link-external'></i></a>
                 </div>
             </div>
@@ -248,18 +273,24 @@
                 <img src="/assets/employee_management.jpg" alt="">
                 <div class="project-layer">
                     <h4>Employee Management System</h4>
-                    <p>A backend application developed using Spring Boot to manage employee records, including registration, course enrollment, and performance tracking.
-                        Implements RESTful APIs, DTOs, and robust CRUD operations for efficient Employee data handling.</p>
-                    <a href="https://github.com/PrathameshBhagwat/Employee_Management.git"><i class='bx bx-link-external'></i></a>
+                    <p>A backend application developed using Spring Boot to manage employee records, including
+                        registration, course enrollment, and performance tracking.
+                        Implements RESTful APIs, DTOs, and robust CRUD operations for efficient Employee data handling.
+                    </p>
+                    <a href="https://github.com/PrathameshBhagwat/Employee_Management.git"><i
+                            class='bx bx-link-external'></i></a>
                 </div>
             </div>
             <div class="project-box">
                 <img src="assets/uber_ride_analysis.webp" alt="">
                 <div class="project-layer">
                     <h4>Uber Ride Analysis(Pune)</h4>
-                    <p>Performed exploratory data analysis on Uber ride data to uncover insights on ride frequency, peak hours, and location trends.
-                        Used Python, Pandas, and Matplotlib to visualize patterns and support data-driven decision-making.</p>
-                    <a href="https://github.com/PrathameshBhagwat/Uber_Ride_Analysis.git"><i class='bx bx-link-external'></i></a>
+                    <p>Performed exploratory data analysis on Uber ride data to uncover insights on ride frequency, peak
+                        hours, and location trends.
+                        Used Python, Pandas, and Matplotlib to visualize patterns and support data-driven
+                        decision-making.</p>
+                    <a href="https://github.com/PrathameshBhagwat/Uber_Ride_Analysis.git"><i
+                            class='bx bx-link-external'></i></a>
                 </div>
             </div>
         </div>
@@ -307,9 +338,9 @@
             <a href="#"><i class='bx bxs-up-arrow-square'></i></a>
         </div>
     </footer>
-<script>
-   
-</script>
+    <script>
+
+    </script>
 </body>
 
 </html>
