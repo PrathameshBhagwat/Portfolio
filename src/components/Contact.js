@@ -37,11 +37,32 @@ export default function Contact() {
     e.preventDefault();
     setStatus({ submitting: true, success: null, message: "" });
 
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+    if (!accessKey) {
+      setStatus({
+        submitting: false,
+        success: false,
+        message: "Contact form key is missing. Please define NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY in your environment variables."
+      });
+      return;
+    }
+
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        headers: { 
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || "Not provided",
+          subject: `[Portfolio Message] ${formData.subject || "No Subject"}`,
+          message: formData.message,
+          from_name: `${formData.name} (Portfolio Form)`
+        }),
       });
 
       const result = await response.json();
@@ -67,6 +88,7 @@ export default function Contact() {
         });
       }
     } catch (error) {
+      console.error("Direct contact submit error:", error);
       setStatus({
         submitting: false,
         success: false,
