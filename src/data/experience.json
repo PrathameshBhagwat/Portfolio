@@ -1,0 +1,56 @@
+[
+  {
+    "company": "NeuAI Labs",
+    "role": "Data Science & Software Development Intern",
+    "type": "Remote",
+    "date": "Dec 2024 - Feb 2025",
+    "location": "Pune, India",
+    "points": [
+      "Gained hands-on experience in software development, contributing to the development of cutting-edge technologies.",
+      "Wrote, tested, and debugged code to meet project requirements while collaborating with senior developers to design and implement software solutions.",
+      "Participated in the design and architecture of software applications, applying design patterns and best practices.",
+      "Assisted in writing unit tests, performing code reviews, and collaborating with QA teams to ensure software quality.",
+      "Documented code and technical details for future reference and maintenance.",
+      "Actively engaged in skill development, learning about new Python technologies, tools, and methodologies.",
+      "Utilized version control systems like Git for collaborative development and efficient code management."
+    ]
+  },
+  {
+    "company": "Future Interns",
+    "role": "Full Stack Web Development Intern",
+    "type": "Remote",
+    "date": "Mar 2025 - May 2025",
+    "location": "Pune, India",
+    "points": [
+      "Completed a 2-month self-paced internship focused on building real-world applications using modern web technologies.",
+      "Task 1 (Personal Portfolio Website): Developed a fully responsive portfolio using HTML, CSS, JavaScript, and React.js with contact form email integration and SEO optimization.",
+      "Task 2 (Weather Dashboard App): Built a weather app using React.js and Node.js to fetch real-time data from OpenWeather API and save favorite cities.",
+      "Task 3 (Website Rebranding Using AI): Reimagined UI/UX of a famous brand using Next.js, Tailwind CSS, and Firebase with CMS support."
+    ]
+  },
+  {
+    "company": "Tata Virtual Internship",
+    "role": "Data Analyst Virtual Intern",
+    "type": "Remote",
+    "date": "",
+    "location": "Pune, India",
+    "points": [
+      "Conducted data visualization analytics to identify top retail markets and product category growth.",
+      "Designed interactive analytics dashboards using data modeling and dashboard configurations.",
+      "Identified sales trends and inventory bottlenecks, presenting insights for data-driven decisions.",
+      "Drafted visual charts representing business performance and customer segments."
+    ]
+  },
+  {
+    "company": "Willpower",
+    "role": "Mobile Application Administrator & Assistant Intern",
+    "type": "Remote",
+    "date": "Dec 2022 - May 2023",
+    "location": "Pune, India",
+    "points": [
+      "Learned about Assistant technologies and services.",
+      "Worked as the Mobile Application Administrator for administrative controls.",
+      "Worked for social causes and contributed to charitable trusts."
+    ]
+  }
+]

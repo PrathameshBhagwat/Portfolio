@@ -1,0 +1,43 @@
+[
+  {
+    "title": "OCI 2025 Certified Developer Professional",
+    "issuer": "Oracle University",
+    "date": "September 29, 2025",
+    "validUntil": "September 29, 2027",
+    "credId": "102578289OCID25CP"
+  },
+  {
+    "title": "OCI 2025 Certified Data Science Professional",
+    "issuer": "Oracle University",
+    "date": "September 09, 2025",
+    "validUntil": "September 09, 2027",
+    "credId": "102578289OCI25DSOCP"
+  },
+  {
+    "title": "OCI 2025 Certified Generative AI Professional",
+    "issuer": "Oracle University",
+    "date": "September 12, 2025",
+    "validUntil": "September 12, 2027",
+    "credId": "102578289OCI25GAIOCP"
+  },
+  {
+    "title": "Career Essentials in Generative AI",
+    "issuer": "Microsoft & LinkedIn Learning",
+    "date": "November 04, 2024",
+    "credId": "9d3f09b33e...8ba54d1",
+    "skills": ["Computer Ethics", "Artificial Intelligence (AI)", "Generative AI"]
+  },
+  {
+    "title": "Career Essentials in Software Development",
+    "issuer": "Microsoft & LinkedIn Learning",
+    "date": "October 19, 2024",
+    "credId": "284cee620...d8660d93",
+    "skills": ["Programming", "Software Development"]
+  },
+  {
+    "title": "Mastering Data Structures & Algorithms using C and C++",
+    "issuer": "Udemy — Abdul Bari",
+    "date": "September 30, 2024",
+    "credId": "UC-e239d0bc-ef30-4bf0-a231-df3fdb0de795"
+  }
+]

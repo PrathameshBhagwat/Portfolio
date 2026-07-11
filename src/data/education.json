@@ -1,0 +1,44 @@
+[
+  {
+    "stage": "High School (10th)",
+    "institution": "K.V.K. High School",
+    "year": "2015 - 2020",
+    "result": "SSC - 87.20%",
+    "description": "Completed 10th grade at K.V.K. High School, Kalamb. Built a solid base in science, algebra, and geometry. Actively participated in local science exhibitions, cultural programs, and science quiz challenges. Developed analytical skills and early logic interests, laying down the groundwork for computer science and data studies."
+  },
+  {
+    "stage": "Junior College (12th)",
+    "institution": "G.R.P. Sabnis Junior College",
+    "year": "2020 - 2022",
+    "result": "HSC - 71.83%",
+    "description": "Completed 12th grade at G.R.P. Sabnis Junior College, Pune, specializing in the Science stream with Computer Science as a vocational subject. Gained foundational coding skills in C++ and basic database operations. Developed deep logic mapping patterns, object-oriented basics, and computational problem-solving frameworks."
+  },
+  {
+    "stage": "Engineering Year 1",
+    "institution": "Savitribai Phule Pune University (SPPU)",
+    "year": "2022 - 2023",
+    "result": "CGPA - 8.32",
+    "description": "Completed First Year B.E. in Artificial Intelligence & Data Science at Savitribai Phule Pune University. Studied Engineering Mathematics, Programming and Problem Solving in Python, and basic electronics. Engaged in hands-on code laboratories and mastered fundamental sorting and list search algorithms."
+  },
+  {
+    "stage": "Engineering Year 2",
+    "institution": "Savitribai Phule Pune University (SPPU)",
+    "year": "2023 - 2024",
+    "result": "CGPA - 9.04",
+    "description": "Completed Second Year B.E. at SPPU. Dived into core subjects: Machine Learning, Database Management Systems (DBMS), OOPs with Java, and Computer Networks. Developed practical database systems, mapped logical models, and designed custom Java console tools for data sorting."
+  },
+  {
+    "stage": "Engineering Year 3",
+    "institution": "Savitribai Phule Pune University (SPPU)",
+    "year": "2024 - 2025",
+    "result": "CGPA - 9.28",
+    "description": "Completed Third Year B.E. at SPPU. Specialized in advanced neural architectures, data pipelines, big data systems, and analytical algorithms. Conducted predictive analytics projects, optimized data cleaning pipelines in Python, and collaborated on ML research tasks."
+  },
+  {
+    "stage": "Engineering Year 4",
+    "institution": "Savitribai Phule Pune University (SPPU)",
+    "year": "2025 - 2026",
+    "result": "CGPA - 9.30",
+    "description": "Currently in Fourth Year B.E. at Savitribai Phule Pune University. Participating in internship achievements at NeuAI Labs and Future Interns. Building final-year SDE systems, designing real-time AI dashboards, and implementing production-grade API nodes."
+  }
+]

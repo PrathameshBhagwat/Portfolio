@@ -1,0 +1,44 @@
+[
+  {
+    "title": "Smart Campaign Manager",
+    "description": "AI outreach campaign platform to generate, personalize, and analyze bulk emails. Tracks provider metrics across OpenAI, Anthropic, and Gemini LLMs with cost and reply analytics.",
+    "tags": ["Next.js", "AI Integration", "Tailwind CSS", "Firebase"],
+    "github": "https://github.com/PrathameshBhagwat/smart-campaign-manager.git",
+    "demo": "https://smartcampaign.duckdns.org"
+  },
+  {
+    "title": "FutureMap",
+    "description": "AI-Powered Career Guidance Platform helping students discover career paths through assessments, resume scoring, and visual learning roadmaps.",
+    "tags": ["Python", "Machine Learning", "React", "Node.js"],
+    "github": "https://github.com/PrathameshBhagwat/Futuremap.git",
+    "demo": "https://futuremap-psi.vercel.app/"
+  },
+  {
+    "title": "IoT Virtual Doctor",
+    "description": "An intelligent healthcare assistant that remotely monitors patient vitals using IoT sensors and sends real-time health data to doctors for early diagnosis.",
+    "tags": ["IoT", "Sensors", "Cloud Integration", "Data Logging"],
+    "github": "https://github.com/PrathameshBhagwat/IoT-Virtual-Doctor.git",
+    "demo": "https://drive.google.com/drive/folders/13tAolZj9d590GxEEW0C96zicgX8Ri5Lj?usp=drive_link"
+  },
+  {
+    "title": "Employee Management System",
+    "description": "A backend service built with Spring Boot to manage corporate employee records, registrations, course enrollments, and performance with RESTful APIs.",
+    "tags": ["Java", "Spring Boot", "REST API", "DBMS"],
+    "github": "https://github.com/PrathameshBhagwat/Employee_Management.git",
+    "demo": null
+  },
+  {
+    "title": "Uber Ride Data Analysis",
+    "description": "Performed exploratory data analysis on Uber rides in Pune to uncover ride frequency, peak hours, and location trends using statistical plotting libraries.",
+    "tags": ["Python", "Pandas", "Matplotlib", "Data Analysis"],
+    "github": "https://github.com/PrathameshBhagwat/Uber_Ride_Analysis.git",
+    "demo": null
+  },
+  {
+    "title": "NavEye",
+    "description": "A wearable navigation aid for visually impaired individuals. Incorporates ultrasonic sensors and speech synthesis models for distance hazard alerts.",
+    "tags": ["Arduino", "Sensors", "Speech Synthesis", "Embedded"],
+    "github": "https://github.com/PrathameshBhagwat/NavEye.git",
+    "demo": null
+  }
+]

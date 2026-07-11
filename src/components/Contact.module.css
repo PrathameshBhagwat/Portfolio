@@ -1,0 +1,158 @@
+.contact {
+  background-color: var(--card-bg);
+  border-top: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 4rem;
+  align-items: flex-start;
+}
+
+/* Left side: Information Cards */
+.infoColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.infoCard {
+  background-color: var(--background);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+}
+
+.infoCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-orange);
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background-color: rgba(249, 115, 22, 0.1);
+  color: var(--accent-orange);
+  font-size: 1.4rem;
+}
+
+.infoCard:hover .iconWrapper {
+  background: var(--accent-gradient);
+  color: #ffffff;
+}
+
+.infoContent h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 0.2rem;
+}
+
+.infoContent p {
+  font-size: 0.95rem;
+  color: var(--muted-text);
+}
+
+/* Right side: Form Card */
+.formCard {
+  background-color: var(--background);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: var(--card-shadow);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--foreground);
+  font-family: var(--font-heading);
+}
+
+.input, .textarea {
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--foreground);
+  padding: 0.9rem 1.2rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.input:focus, .textarea:focus {
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+  background-color: var(--card-bg);
+}
+
+.textarea {
+  resize: vertical;
+}
+
+/* Form alerts states */
+.statusMessage {
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.success {
+  background-color: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.error {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 550px) {
+  .inputRow {
+    grid-template-columns: 1fr;
+  }
+  .formCard {
+    padding: 1.5rem;
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "categories": [
+    {
+      "id": "langs",
+      "label": "Languages & Fullstack",
+      "skills": ["Python", "Java", "NodeJS", "React", "C++", "SpringBoot", "Tailwind", "HTML", "CSS", "Javascript", "REST API"]
+    },
+    {
+      "id": "data",
+      "label": "Data & AI",
+      "skills": ["Pandas", "NumPy", "Scikit-Learn", "Streamlit", "Matplotlib", "Seaborn", "Exploratory Data Analysis"]
+    },
+    {
+      "id": "cloud",
+      "label": "Cloud & DevOps",
+      "skills": ["Git", "GitHub", "AWS", "Docker"]
+    },
+    {
+      "id": "db",
+      "label": "Database",
+      "skills": ["SQL", "PostgreSQL", "MongoDB", "Supabase", "Prisma ORM"]
+    },
+    {
+      "id": "tools",
+      "label": "Tools & Methods",
+      "skills": ["VS Code", "Kaggle", "Figma", "DSA (Problem Solving)"]
+    }
+  ]
+}

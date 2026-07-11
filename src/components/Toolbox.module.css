@@ -1,0 +1,128 @@
+.toolbox {
+  background-color: var(--background);
+}
+
+/* Category Filter Tabs (Pills) */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3.5rem;
+  flex-wrap: wrap;
+}
+
+.tabBtn {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.6rem 1.4rem;
+  border-radius: 9999px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tabBtn:hover {
+  border-color: var(--accent-orange);
+  transform: translateY(-1px);
+}
+
+.tabActive {
+  background: var(--accent-gradient);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
+}
+
+/* Capsule Pills Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Capsule Pill Card */
+.pill {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 9999px;
+  padding: 0.8rem 1.8rem;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: default;
+  animation: floatSkillCard 5s ease-in-out infinite alternate, glowPulse 5s ease-in-out infinite alternate;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pill:hover {
+  transform: translateY(-4px) scale(1.03) !important;
+  border-color: var(--accent-orange) !important;
+  box-shadow: 0 10px 20px rgba(249, 115, 22, 0.15) !important;
+  animation-play-state: paused;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+/* Specific Brand Colors for Icons */
+.iconPython { color: #3776ab; }
+.iconJava { color: #007396; }
+.iconNodejs { color: #339933; }
+.iconReact { color: #61dafb; }
+.iconCplusplus { color: #00599c; }
+.iconSpringboot { color: #6db33f; }
+.iconTailwind { color: #06b6d4; }
+.iconHtml { color: #e34f26; }
+.iconCss { color: #1572b6; }
+.iconJs { color: #f7df1e; }
+.iconNetwork { color: #f97316; }
+
+.iconPandas { color: #150458; }
+.iconNumpy { color: #013243; }
+.iconScikitlearn { color: #f7931e; }
+.iconChart { color: #a855f7; }
+
+.iconDatabase { color: #fc6d26; }
+.iconPostgresql { color: #4169e1; }
+.iconMongodb { color: #47a248; }
+
+.iconGit { color: #f05032; }
+.iconCode { color: #007acc; }
+.iconKaggle { color: #20beff; }
+.iconBrain { color: #ec4899; }
+
+/* New skill icon colors */
+.iconStreamlit { color: #ff4b4b; }
+.iconMatplotlib { color: #11557c; }
+.iconSeaborn { color: #444876; }
+.iconAws { color: #ff9900; }
+.iconDocker { color: #2496ed; }
+.iconSupabase { color: #3ecf8e; }
+.iconPrisma { color: #2d3748; }
+.iconFigma { color: #f24e1e; }
+
+.text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+@media (max-width: 550px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .pill {
+    padding: 0.7rem 1.5rem;
+  }
+}

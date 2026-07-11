@@ -1,0 +1,433 @@
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-top: 120px;
+  overflow: hidden;
+  background-color: var(--background);
+}
+
+/* Subtle shifting color wash */
+.heroBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.05;
+  background: linear-gradient(120deg, #f97316 0%, #a855f7 25%, #06b6d4 50%, #f97316 75%, #a855f7 100%);
+  background-size: 300% 300%;
+  animation: bgShift 14s ease-in-out infinite;
+}
+
+@keyframes bgShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== LAYOUT ===== */
+.container {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 3rem;
+  z-index: 10;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-orange);
+}
+
+.title {
+  font-size: 3.8rem;
+  line-height: 1.1;
+  color: var(--foreground);
+}
+
+.nameHighlight {
+  position: relative;
+  display: inline-block;
+}
+
+.desc {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--muted-text);
+  max-width: 560px;
+}
+
+.btnGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.socialIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background-color: var(--card-bg);
+  color: var(--foreground);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.socialIcon:hover {
+  border-color: var(--accent-orange);
+  color: #ffffff;
+  background: var(--accent-gradient);
+  transform: translateY(-3px) rotate(8deg);
+  box-shadow: 0 4px 10px rgba(249, 115, 22, 0.2);
+}
+
+/* ===== RIGHT COLUMN — PLANET SYSTEM ===== */
+.visual {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.voiceCardWrapper {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  justify-content: center;
+  z-index: 20;
+  margin-top: -1.5rem;
+}
+
+.planetSystem {
+  position: relative;
+  width: 420px;
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 900px;
+}
+
+/* ===== THE PLANET (Profile Image) ===== */
+.planet {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 10;
+  border: 4px solid transparent;
+  background-image: linear-gradient(var(--card-bg), var(--card-bg)),
+                     linear-gradient(135deg, #f97316, #a855f7, #06b6d4);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow:
+    0 0 45px rgba(168, 85, 247, 0.18),
+    0 0 90px rgba(249, 115, 22, 0.1);
+  animation: planetFloat 5s ease-in-out infinite;
+}
+
+.planetImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+@keyframes planetFloat {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 0 45px rgba(168, 85, 247, 0.18),
+      0 0 90px rgba(249, 115, 22, 0.1),
+      0 20px 40px -10px rgba(0,0,0,0.18);
+  }
+  50% {
+    transform: translateY(-16px);
+    box-shadow:
+      0 0 55px rgba(168, 85, 247, 0.25),
+      0 0 110px rgba(249, 115, 22, 0.14),
+      0 34px 50px -10px rgba(0,0,0,0.1);
+  }
+}
+
+/* Ground shadow beneath the floating image */
+.groundShadow {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.12) 0%, transparent 70%);
+  z-index: 3;
+  animation: shadowBreath 5s ease-in-out infinite;
+}
+
+@keyframes shadowBreath {
+  0%, 100% { transform: translateX(-50%) scaleX(1); opacity: 0.5; }
+  50% { transform: translateX(-50%) scaleX(0.65); opacity: 0.25; }
+}
+
+/* ===== SATURN RING — Tilted orbiting text ring ===== */
+.saturnRing {
+  position: absolute;
+  width: 390px;
+  height: 390px;
+  top: 50%;
+  left: 50%;
+  margin-top: -195px;
+  margin-left: -195px;
+  border-radius: 50%;
+  transform: rotateX(68deg);
+  transform-style: preserve-3d;
+  animation: spinRing 16s linear infinite;
+  z-index: 6;
+  pointer-events: none;
+}
+
+@keyframes spinRing {
+  from { transform: rotateX(68deg) rotateZ(0deg); }
+  to   { transform: rotateX(68deg) rotateZ(360deg); }
+}
+
+/* Each label positioned around the ring circumference */
+.ringLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent-orange);
+  white-space: nowrap;
+  pointer-events: auto;
+  transform:
+    rotate(var(--angle))
+    translateX(195px)
+    rotate(calc(-1 * var(--angle)))
+    rotateX(-68deg);
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 0.3rem 0.85rem;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  opacity: 0.9;
+}
+
+.ringLabel:hover {
+  opacity: 1;
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 15px rgba(249, 115, 22, 0.25);
+  transform:
+    rotate(var(--angle))
+    translateX(195px)
+    rotate(calc(-1 * var(--angle)))
+    rotateX(-68deg)
+    scale(1.15);
+}
+
+/* Outer decorative glow ring */
+.saturnRingOuter {
+  position: absolute;
+  width: 410px;
+  height: 410px;
+  top: 50%;
+  left: 50%;
+  margin-top: -205px;
+  margin-left: -205px;
+  border-radius: 50%;
+  border: 1px solid rgba(168, 85, 247, 0.12);
+  transform: rotateX(68deg);
+  animation: spinRing 24s linear infinite reverse;
+  z-index: 4;
+  pointer-events: none;
+  box-shadow:
+    0 0 20px rgba(168, 85, 247, 0.06),
+    inset 0 0 20px rgba(249, 115, 22, 0.04);
+}
+
+/* ===== DECORATIVE SPARKLE STARS ===== */
+.sparkle {
+  position: absolute;
+  font-size: 1.6rem;
+  z-index: 12;
+  animation: sparkleFloat 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.sparkle1 {
+  top: 15%;
+  right: 10%;
+  color: #f97316;
+  animation-delay: 0s;
+}
+.sparkle2 {
+  top: 25%;
+  left: 5%;
+  color: #a855f7;
+  font-size: 1.2rem;
+  animation-delay: 0.8s;
+}
+.sparkle3 {
+  bottom: 22%;
+  right: 8%;
+  color: #06b6d4;
+  font-size: 1.1rem;
+  animation-delay: 1.5s;
+}
+.sparkle4 {
+  bottom: 30%;
+  left: 12%;
+  color: #ec4899;
+  font-size: 1.4rem;
+  animation-delay: 2.2s;
+}
+
+@keyframes sparkleFloat {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+  50%      { transform: translateY(-8px) scale(1.25); opacity: 1; }
+}
+
+/* ===== DOT GRID DECORATION ===== */
+.dotGrid {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  z-index: 2;
+  opacity: 0.25;
+  background-image: radial-gradient(circle, var(--muted-text) 1.5px, transparent 1.5px);
+  background-size: 10px 10px;
+  pointer-events: none;
+}
+
+.dotGridTL {
+  top: 8%;
+  left: 2%;
+}
+.dotGridBR {
+  bottom: 10%;
+  right: 2%;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 991px) {
+  .hero {
+    min-height: auto;
+    padding: 140px 0 80px 0;
+  }
+  .container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+  .content {
+    align-items: center;
+  }
+  .desc {
+    margin: 0 auto;
+  }
+  .btnGroup {
+    justify-content: center;
+  }
+  .socialLinks {
+    justify-content: center;
+  }
+  .visual {
+    margin-top: 1rem;
+  }
+  .voiceCardWrapper {
+    margin-top: 0;
+  }
+  .planetSystem {
+    width: 320px;
+    height: 320px;
+  }
+  .planet {
+    width: 170px;
+    height: 170px;
+  }
+  .saturnRing {
+    width: 290px;
+    height: 290px;
+    margin-top: -145px;
+    margin-left: -145px;
+  }
+  .ringLabel {
+    transform:
+      rotate(var(--angle))
+      translateX(145px)
+      rotate(calc(-1 * var(--angle)))
+      rotateX(-68deg);
+    font-size: 0.6rem;
+    padding: 0.25rem 0.6rem;
+  }
+  .saturnRingOuter {
+    width: 310px;
+    height: 310px;
+    margin-top: -155px;
+    margin-left: -155px;
+  }
+}
+
+@media (max-width: 550px) {
+  .title {
+    font-size: 2.6rem;
+  }
+  .planetSystem {
+    width: 280px;
+    height: 280px;
+  }
+  .planet {
+    width: 140px;
+    height: 140px;
+  }
+  .saturnRing {
+    width: 250px;
+    height: 250px;
+    margin-top: -125px;
+    margin-left: -125px;
+  }
+  .ringLabel {
+    transform:
+      rotate(var(--angle))
+      translateX(125px)
+      rotate(calc(-1 * var(--angle)))
+      rotateX(-68deg);
+    font-size: 0.55rem;
+    padding: 0.2rem 0.5rem;
+  }
+  .saturnRingOuter {
+    width: 270px;
+    height: 270px;
+    margin-top: -135px;
+    margin-left: -135px;
+  }
+}
