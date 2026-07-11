@@ -42,7 +42,20 @@ export async function POST(request) {
       }),
     });
 
-    const data = await response.json();
+    const responseText = await response.text();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error("Web3Forms returned non-JSON response:", responseText);
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: "The mail API provider returned an invalid HTML response. This usually indicates an API key mismatch, network block, or service outage." 
+        },
+        { status: 502 }
+      );
+    }
 
     if (response.ok && data.success) {
       return NextResponse.json({ success: true, message: "Your message has been sent successfully!" });
