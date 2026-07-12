@@ -254,3 +254,24 @@
   accent-color: var(--accent-orange);
   cursor: pointer;
 }
+
+@media (max-width: 480px) {
+  .header {
+    top: 8px;
+    width: calc(100% - 16px);
+    padding: 0 0.5rem;
+  }
+  .actions {
+    gap: 0.4rem;
+    padding-right: 0.25rem;
+  }
+  .logo {
+    font-size: 1.15rem;
+    padding-left: 0.25rem;
+  }
+  .settingsDropdown {
+    right: -10px;
+    min-width: calc(100vw - 48px);
+    max-width: 280px;
+  }
+}

@@ -452,3 +452,10 @@ section:not(#home):not(#about) {
   content-visibility: auto;
   contain-intrinsic-size: 0 500px;
 }
+
+/* ===== Responsive Layout Fixes ===== */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem !important;
+  }
+}
