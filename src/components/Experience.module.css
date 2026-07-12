@@ -50,11 +50,10 @@
   position: absolute;
   width: 160px;
   height: 160px;
-  background-color: rgba(255, 255, 255, 0.05);
+  /* Solid bg replaces backdrop-filter — 6 faces × 4 cubes = 24 GPU layers saved */
+  background-color: rgba(30, 30, 40, 0.85);
   border: 2px solid rgba(255, 255, 255, 0.15);
   border-radius: 16px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   display: flex;
   flex-direction: column;
   align-items: center;

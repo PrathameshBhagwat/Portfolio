@@ -147,6 +147,9 @@
     0 0 45px rgba(168, 85, 247, 0.18),
     0 0 90px rgba(249, 115, 22, 0.1);
   animation: planetFloat 5s ease-in-out infinite;
+  /* GPU layer promotion for the animation */
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .planetImage {
@@ -157,21 +160,11 @@
   display: block;
 }
 
+/* planetFloat only animates transform (composited, GPU-friendly).
+   Box-shadow changes removed — they force paint invalidation on every frame. */
 @keyframes planetFloat {
-  0%, 100% {
-    transform: translateY(0);
-    box-shadow:
-      0 0 45px rgba(168, 85, 247, 0.18),
-      0 0 90px rgba(249, 115, 22, 0.1),
-      0 20px 40px -10px rgba(0,0,0,0.18);
-  }
-  50% {
-    transform: translateY(-16px);
-    box-shadow:
-      0 0 55px rgba(168, 85, 247, 0.25),
-      0 0 110px rgba(249, 115, 22, 0.14),
-      0 34px 50px -10px rgba(0,0,0,0.1);
-  }
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-16px); }
 }
 
 /* Ground shadow beneath the floating image */
@@ -208,6 +201,8 @@
   animation: spinRing 16s linear infinite;
   z-index: 6;
   pointer-events: none;
+  /* GPU layer promotion for 3D ring animation */
+  will-change: transform;
 }
 
 @keyframes spinRing {

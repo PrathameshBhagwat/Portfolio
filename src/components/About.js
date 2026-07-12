@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FiTarget, FiZap, FiCpu, FiFeather } from "react-icons/fi";
@@ -11,9 +11,8 @@ import LeetCodeHeatmap from "./LeetCodeHeatmap";
 
 export default function About() {
   const cardRef = useRef(null);
-  const [rotate, setRotate] = useState({ x: 0, y: 0 });
-  const [sheen, setSheen] = useState({ x: 50, y: 50 });
-  const [opacity, setOpacity] = useState(0);
+  // Replace 3 separate state updates with a single RAF-throttled ref
+  const rafRef = useRef(null);
 
   const { settings } = useSpeechSynthesis();
   const lang = settings?.language || "en";
@@ -22,24 +21,33 @@ export default function About() {
   const handleMouseMove = (e) => {
     const card = cardRef.current;
     if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left - width / 2;
-    const mouseY = e.clientY - rect.top - height / 2;
-    const rX = -(mouseY / height) * 30;
-    const rY = (mouseX / width) * 30;
-    const sX = ((e.clientX - rect.left) / width) * 100;
-    const sY = ((e.clientY - rect.top) / height) * 100;
-    setRotate({ x: rX, y: rY });
-    setSheen({ x: sX, y: sY });
-    setOpacity(1);
+    // Cancel any pending frame to avoid queuing multiple updates
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const rect = card.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left - rect.width / 2;
+      const mouseY = e.clientY - rect.top - rect.height / 2;
+      const rX = -(mouseY / rect.height) * 30;
+      const rY = (mouseX / rect.width) * 30;
+      const sX = ((e.clientX - rect.left) / rect.width) * 100;
+      const sY = ((e.clientY - rect.top) / rect.height) * 100;
+      // Apply directly to DOM — bypasses React render entirely
+      card.style.transform = `perspective(1000px) rotateX(${rX}deg) rotateY(${rY}deg)`;
+      const sheen = card.querySelector('[data-sheen]');
+      if (sheen) {
+        sheen.style.background = `radial-gradient(circle at ${sX}% ${sY}%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 60%)`;
+        sheen.style.opacity = '1';
+      }
+    });
   };
 
   const handleMouseLeave = () => {
-    setRotate({ x: 0, y: 0 });
-    setSheen({ x: 50, y: 50 });
-    setOpacity(0);
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    const card = cardRef.current;
+    if (!card) return;
+    card.style.transform = '';
+    const sheen = card.querySelector('[data-sheen]');
+    if (sheen) sheen.style.opacity = '0';
   };
 
   return (
@@ -65,9 +73,6 @@ export default function About() {
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
                 className={styles.holoCard}
-                style={{
-                  transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`,
-                }}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
@@ -81,13 +86,11 @@ export default function About() {
                   sizes="(max-width: 768px) 100vw, 310px"
                 />
                 
-                {/* Dynamic sheen spot */}
+                {/* Dynamic sheen spot — updated via RAF directly on DOM element */}
                 <div 
+                  data-sheen
                   className={styles.sheen}
-                  style={{
-                    background: `radial-gradient(circle at ${sheen.x}% ${sheen.y}%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 60%)`,
-                    opacity: opacity,
-                  }}
+                  style={{ opacity: 0 }}
                 />
                 
                 {/* Rainbow hologram overlay */}

@@ -264,6 +264,9 @@ section {
   pointer-events: none;
   filter: blur(0.5px);
   transition: opacity 0.3s ease;
+  /* Promote to GPU compositor layer */
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .techNode1 {
@@ -294,7 +297,13 @@ section {
   animation: floatSpin2 28s linear infinite;
 }
 
+/* On mobile: stop all continuous rotation — too GPU expensive */
 @media (max-width: 768px) {
+  .techNode1, .techNode2, .techNode3, .techNode4 {
+    animation: none !important;
+    will-change: auto;
+    transform: none;
+  }
   .techNode1 { font-size: 2.8rem; right: 5%; }
   .techNode2 { font-size: 3rem; left: 2%; }
   .techNode3 { font-size: 3.2rem; right: 4%; }
@@ -374,21 +383,9 @@ section {
   }
 }
 
-/* Skill Card Outline Glow Pulse */
-@keyframes glowPulse {
-  0% {
-    box-shadow: 0 0 4px rgba(168, 85, 247, 0.05);
-    border-color: var(--card-border);
-  }
-  50% {
-    box-shadow: 0 0 12px rgba(249, 115, 22, 0.2);
-    border-color: rgba(249, 115, 22, 0.25);
-  }
-  100% {
-    box-shadow: 0 0 4px rgba(168, 85, 247, 0.05);
-    border-color: var(--card-border);
-  }
-}
+/* Skill Card Outline Glow Pulse — triggered via hover transition only (no looping animation for performance) */
+/* glowPulse keyframe intentionally removed: box-shadow animation forces paint on every frame.
+   Hover effect is handled via transition in Toolbox.module.css */
 
 /* Global modal backdrop */
 .modalBackdrop {
@@ -448,10 +445,13 @@ section {
 }
 
 /* ===== Paint & Performance Optimizations ===== */
-section:not(#home):not(#about) {
-  content-visibility: auto;
-  contain-intrinsic-size: 0 500px;
-}
+/* Per-section contain-intrinsic-size based on actual heights avoids layout shift reflows */
+#experience { content-visibility: auto; contain-intrinsic-size: 0 900px; }
+#education  { content-visibility: auto; contain-intrinsic-size: 0 700px; }
+#skills     { content-visibility: auto; contain-intrinsic-size: 0 600px; }
+#projects   { content-visibility: auto; contain-intrinsic-size: 0 900px; }
+#certificates { content-visibility: auto; contain-intrinsic-size: 0 600px; }
+#contact    { content-visibility: auto; contain-intrinsic-size: 0 700px; }
 
 /* ===== Responsive Layout Fixes ===== */
 @media (max-width: 480px) {

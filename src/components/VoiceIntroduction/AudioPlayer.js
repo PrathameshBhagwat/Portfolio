@@ -34,9 +34,12 @@ export default function AudioPlayer() {
     return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
-  // Initialize and load the Audio object on component mount
-  useEffect(() => {
+  // Initialize and load the Audio object lazily on first user interaction
+  // This prevents an automatic network request to intro.mp3 on page load
+  const initAudio = () => {
+    if (audioRef.current) return; // already initialized
     const audio = new Audio("/assets/intro.mp3");
+    audio.preload = "none"; // Don't prefetch — load on demand
     audio.volume = volume;
     audio.muted = isMuted;
     audio.playbackRate = playbackRate;
@@ -64,49 +67,22 @@ export default function AudioPlayer() {
     audio.addEventListener("error", handleError);
 
     audioRef.current = audio;
-
-    // Trigger metadata load if cached or already ready
-    if (audio.readyState >= 1) {
-      setTimeout(() => setDuration(audio.duration), 0);
-    }
-
-    return () => {
-      audio.removeEventListener("timeupdate", handleTimeUpdate);
-      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      audio.removeEventListener("ended", handleEnded);
-      audio.removeEventListener("error", handleError);
-      audio.pause();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleMouseEnter = () => {
-    // No-op since loaded on mount
+    return audio;
   };
 
-  // Sync volume state to audio element
+  // Cleanup audio on unmount
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, [volume]);
-
-  // Sync mute state to audio element
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.muted = isMuted;
-    }
-  }, [isMuted]);
-
-  // Sync playback rate to audio element
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.playbackRate = playbackRate;
-    }
-  }, [playbackRate]);
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
 
   const handlePlayPause = () => {
-    const audio = audioRef.current;
+    // Lazy-init audio on first play — prevents eager network request on page load
+    const audio = audioRef.current || initAudio();
     if (!audio) return;
     if (isPlaying) {
       audio.pause();
@@ -139,7 +115,6 @@ export default function AudioPlayer() {
   return (
     <div 
       className={styles.cardContainer}
-      onMouseEnter={handleMouseEnter}
     >
       <AnimatePresence mode="wait">
         {!isExpanded ? (

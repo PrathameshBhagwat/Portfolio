@@ -56,7 +56,8 @@
   align-items: center;
   gap: 1rem;
   cursor: default;
-  animation: floatSkillCard 5s ease-in-out infinite alternate, glowPulse 5s ease-in-out infinite alternate;
+  /* Only floatSkillCard runs — glowPulse removed (box-shadow anim is paint-heavy) */
+  animation: floatSkillCard 5s ease-in-out infinite alternate;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -124,5 +125,7 @@
   }
   .pill {
     padding: 0.7rem 1.5rem;
+    /* Disable all continuous animations on mobile — saves GPU */
+    animation: none;
   }
 }

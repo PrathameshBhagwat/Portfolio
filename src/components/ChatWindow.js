@@ -262,8 +262,10 @@ export default function ChatWindow({ onClose }) {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       
-      let incomingText = "";
+      // Accumulate streaming text in a ref to avoid setState on every chunk
+      let accumulatedText = "";
       let incomingActions = [];
+      let pendingRaf = null;
       
       const streamMsgId = `stream-msg-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
       
@@ -280,9 +282,25 @@ export default function ChatWindow({ onClose }) {
       
       setIsTyping(false);
 
+      // Throttled flush: only call setMessages at RAF frequency, not per-chunk
+      const flushToState = () => {
+        const currentText = accumulatedText;
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === streamMsgId ? { ...msg, text: currentText } : msg
+          )
+        );
+        pendingRaf = null;
+      };
+
       while (true) {
         const { value, done } = await reader.read();
-        if (done) break;
+        if (done) {
+          // Final flush on stream end
+          if (pendingRaf) cancelAnimationFrame(pendingRaf);
+          flushToState();
+          break;
+        }
 
         const chunkStr = decoder.decode(value);
         const lines = chunkStr.split("\n\n");
@@ -295,12 +313,11 @@ export default function ChatWindow({ onClose }) {
             try {
               const data = JSON.parse(dataStr);
               if (data.type === "text") {
-                incomingText += data.content;
-                setMessages((prev) =>
-                  prev.map((msg) =>
-                    msg.id === streamMsgId ? { ...msg, text: incomingText } : msg
-                  )
-                );
+                accumulatedText += data.content;
+                // Schedule a RAF flush only if one isn't already pending
+                if (!pendingRaf) {
+                  pendingRaf = requestAnimationFrame(flushToState);
+                }
               } else if (data.type === "actions") {
                 incomingActions = data.actions;
                 setMessages((prev) =>
