@@ -56,11 +56,11 @@ export default function AIAssistant() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 40, scale: 0.92 }}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 40, scale: 0.92 }}
-            transition={{ type: "spring", stiffness: 280, damping: 24 }}
-            style={{ position: "fixed", bottom: "96px", right: "24px", zIndex: 1000 }}
+            exit={{ opacity: 0, y: 30, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className={styles.chatModalWrapper}
           >
             <ChatWindow onClose={() => setIsOpen(false)} />
           </motion.div>

@@ -16,6 +16,11 @@ const LIMIT = 15;
 const WINDOW = 60 * 1000; // 1 minute window
 
 function checkRateLimit(ip) {
+  // Allow localhost / private test IPs without strict rate limiting
+  if (ip === "::1" || ip === "127.0.0.1" || ip === "localhost") {
+    return true;
+  }
+
   const now = Date.now();
   const record = rateLimitMap.get(ip);
 
@@ -174,19 +179,31 @@ ${context}`;
     }
     messages.push({ role: "user", content: query });
 
-    // LLM connection setup
+    // LLM connection setup with intelligent model fallback
     let endpoint = "";
     let apiKey = "";
-    let model = "";
+    let candidateModels = [];
 
     if (process.env.GROQ_API_KEY) {
       endpoint = "https://api.groq.com/openai/v1/chat/completions";
       apiKey = process.env.GROQ_API_KEY;
-      model = "llama-3.3-70b-versatile";
+      candidateModels = [
+        process.env.GROQ_MODEL,
+        "qwen/qwen3.8-27b",
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        "llama-3.3-70b-versatile",
+        "llama-3.1-8b-instant"
+      ].filter(Boolean);
     } else if (process.env.GEMINI_API_KEY) {
       endpoint = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
       apiKey = process.env.GEMINI_API_KEY;
-      model = "gemini-1.5-flash";
+      candidateModels = [
+        process.env.GEMINI_MODEL,
+        "gemini-1.5-flash",
+        "gemini-2.0-flash",
+        "gemini-2.5-flash"
+      ].filter(Boolean);
     }
 
     const encoder = new TextEncoder();
@@ -211,23 +228,46 @@ ${context}`;
       return new Response(stream, { headers: { "Content-Type": "text/event-stream" } });
     }
 
-    // Call external LLM endpoint
-    const response = await fetchWithRetry(endpoint, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model,
-        messages,
-        temperature: 0.0,
-        stream: true
-      })
-    });
+    // Call external LLM endpoint with automatic fallback across candidate models
+    let response = null;
+    let selectedModel = "";
 
-    if (!response.ok) {
-      throw new Error(`LLM provider returned status code ${response.status}`);
+    for (const modelCandidate of candidateModels) {
+      try {
+        const res = await fetchWithRetry(endpoint, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: modelCandidate,
+            messages,
+            temperature: 0.2,
+            stream: true
+          })
+        }, 2, 500);
+
+        if (res.status === 404 || res.status === 400) {
+          console.warn(`Model "${modelCandidate}" returned status ${res.status}. Falling back to next available model...`);
+          continue;
+        }
+
+        if (!res.ok) {
+          console.warn(`Model "${modelCandidate}" returned error status ${res.status}.`);
+          continue;
+        }
+
+        response = res;
+        selectedModel = modelCandidate;
+        break;
+      } catch (err) {
+        console.warn(`Model attempt for "${modelCandidate}" failed:`, err.message);
+      }
+    }
+
+    if (!response || !response.ok) {
+      throw new Error(`LLM provider failed for all candidate models`);
     }
 
     const reader = response.body.getReader();
@@ -313,10 +353,20 @@ ${context}`;
 
         // Process buffered actions
         if (actionsBuffer) {
-          const cleanActions = actionsBuffer.replace("</actions>", "").trim();
+          let cleanActions = actionsBuffer.replace("</actions>", "").replace("<actions>", "").trim();
+          // Strip markdown code fences if present
+          if (cleanActions.includes("```")) {
+            cleanActions = cleanActions.replace(/```(?:json)?/gi, "").replace(/```/g, "").trim();
+          }
+          const arrayMatch = cleanActions.match(/\[[\s\S]*\]/);
+          if (arrayMatch) {
+            cleanActions = arrayMatch[0];
+          }
           try {
             const actionsObj = JSON.parse(cleanActions);
-            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: "actions", actions: actionsObj })}\n\n`));
+            if (Array.isArray(actionsObj) && actionsObj.length > 0) {
+              controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: "actions", actions: actionsObj })}\n\n`));
+            }
           } catch (e) {
             console.error("Actions parsing failure:", cleanActions, e);
           }

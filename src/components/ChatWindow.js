@@ -10,21 +10,41 @@ import SpeechSettings from "./SpeechSettings";
 import MessageSpeechPlayer from "./MessageSpeechPlayer";
 import styles from "./AIAssistant.module.css";
 
-// Helper function to render simple markdown safe elements
+// Helper function to render clean and safe markdown elements
 function parseMarkdown(text) {
   if (!text) return "";
   
   const lines = text.split("\n");
   const parsedElements = [];
   let currentList = [];
+  let listType = "ul"; // 'ul' or 'ol'
   
   const parseInline = (str) => {
-    const regex = /(\*\*.*?\*\*|\[.*?\]\(.*?\))/g;
+    if (!str) return [];
+    const regex = /(\*\*.*?\*\*|`.*?`|\[.*?\]\(.*?\))/g;
     const tokens = str.split(regex);
     
     return tokens.map((token, idx) => {
+      if (!token) return null;
       if (token.startsWith("**") && token.endsWith("**")) {
         return <strong key={idx}>{token.slice(2, -2)}</strong>;
+      }
+      if (token.startsWith("`") && token.endsWith("`")) {
+        return (
+          <code
+            key={idx}
+            style={{
+              backgroundColor: "rgba(249, 115, 22, 0.12)",
+              color: "var(--accent-orange)",
+              padding: "0.15rem 0.35rem",
+              borderRadius: "4px",
+              fontSize: "0.85em",
+              fontFamily: "monospace"
+            }}
+          >
+            {token.slice(1, -1)}
+          </code>
+        );
       }
       if (token.startsWith("[") && token.includes("](")) {
         const midIdx = token.indexOf("](");
@@ -46,56 +66,77 @@ function parseMarkdown(text) {
     });
   };
 
+  const flushList = () => {
+    if (currentList.length > 0) {
+      if (listType === "ol") {
+        parsedElements.push(<ol key={`list-${parsedElements.length}`} style={{ paddingLeft: "1.2rem", margin: "0.3rem 0" }}>{currentList}</ol>);
+      } else {
+        parsedElements.push(<ul key={`list-${parsedElements.length}`} style={{ paddingLeft: "1.2rem", margin: "0.3rem 0" }}>{currentList}</ul>);
+      }
+      currentList = [];
+    }
+  };
+
   lines.forEach((line, index) => {
     const trimmed = line.trim();
     
-    if (trimmed.startsWith("#### ")) {
-      if (currentList.length > 0) {
-        parsedElements.push(<ul key={`list-${index}`}>{currentList}</ul>);
-        currentList = [];
-      }
-      parsedElements.push(<h4 key={index}>{parseInline(trimmed.substring(5))}</h4>);
+    if (trimmed.startsWith("# ")) {
+      flushList();
+      parsedElements.push(<h3 key={index} style={{ margin: "0.5rem 0 0.25rem", fontWeight: "700" }}>{parseInline(trimmed.substring(2))}</h3>);
       return;
     }
-    
+    if (trimmed.startsWith("## ")) {
+      flushList();
+      parsedElements.push(<h3 key={index} style={{ margin: "0.5rem 0 0.25rem", fontWeight: "700" }}>{parseInline(trimmed.substring(3))}</h3>);
+      return;
+    }
     if (trimmed.startsWith("### ")) {
-      if (currentList.length > 0) {
-        parsedElements.push(<ul key={`list-${index}`}>{currentList}</ul>);
-        currentList = [];
-      }
-      parsedElements.push(<h3 key={index}>{parseInline(trimmed.substring(4))}</h3>);
+      flushList();
+      parsedElements.push(<h3 key={index} style={{ margin: "0.4rem 0 0.2rem", fontWeight: "700" }}>{parseInline(trimmed.substring(4))}</h3>);
+      return;
+    }
+    if (trimmed.startsWith("#### ")) {
+      flushList();
+      parsedElements.push(<h4 key={index} style={{ margin: "0.3rem 0 0.15rem", fontWeight: "600" }}>{parseInline(trimmed.substring(5))}</h4>);
       return;
     }
     
+    // Numbered list item: 1. Item
+    const numMatch = trimmed.match(/^(\d+)\.\s+(.*)/);
+    if (numMatch) {
+      if (listType !== "ol") {
+        flushList();
+        listType = "ol";
+      }
+      currentList.push(<li key={`li-${index}`}>{parseInline(numMatch[2])}</li>);
+      return;
+    }
+
+    // Bullet list item: - Item or * Item
     if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
+      if (listType !== "ul") {
+        flushList();
+        listType = "ul";
+      }
       currentList.push(<li key={`li-${index}`}>{parseInline(trimmed.substring(2))}</li>);
       return;
     }
     
     if (trimmed === "") {
-      if (currentList.length > 0) {
-        parsedElements.push(<ul key={`list-${index}`}>{currentList}</ul>);
-        currentList = [];
-      }
+      flushList();
       return;
     }
     
-    if (currentList.length > 0) {
-      parsedElements.push(<ul key={`list-${index}`}>{currentList}</ul>);
-      currentList = [];
-    }
-    parsedElements.push(<p key={index}>{parseInline(line)}</p>);
+    flushList();
+    parsedElements.push(<p key={index} style={{ margin: "0.25rem 0" }}>{parseInline(line)}</p>);
   });
   
-  if (currentList.length > 0) {
-    parsedElements.push(<ul key={`final-list`}>{currentList}</ul>);
-  }
-  
+  flushList();
   return parsedElements;
 }
 
 // Sub-component for individual Message bubble
-function MessageBubble({ message, onAction }) {
+function MessageBubble({ message, onAction, isTyping }) {
   const [copied, setCopied] = useState(false);
   const { speakingMsgId } = useSpeechSynthesis();
   const isUser = message.sender === "user";
@@ -115,7 +156,17 @@ function MessageBubble({ message, onAction }) {
         className={`${styles.messageBubble} ${isUser ? styles.userBubble : styles.assistantBubble} ${highlightClass}`}
         style={{ transition: "all 0.3s ease" }}
       >
-        {isUser ? message.text : parseMarkdown(message.text)}
+        {isUser ? (
+          message.text
+        ) : message.text ? (
+          parseMarkdown(message.text)
+        ) : (
+          <div className={styles.typingIndicator}>
+            <span />
+            <span />
+            <span />
+          </div>
+        )}
         
         {/* Copy button for Assistant messages */}
         {!isUser && message.text && (
@@ -124,6 +175,7 @@ function MessageBubble({ message, onAction }) {
             onClick={handleCopy}
             style={{ position: "absolute", top: "4px", right: "4px", opacity: 0.6, padding: "2px" }}
             title="Copy Message"
+            aria-label="Copy message text"
           >
             {copied ? <FiCheck size={14} style={{ color: "#22c55e" }} /> : <FiClipboard size={14} />}
           </button>
@@ -142,6 +194,7 @@ function MessageBubble({ message, onAction }) {
                 key={index} 
                 className={styles.actionBtn} 
                 onClick={() => onAction(act)}
+                disabled={isTyping}
               >
                 {act.label}
               </button>
@@ -179,21 +232,33 @@ export default function ChatWindow({ onClose }) {
   useEffect(() => {
     const savedChat = localStorage.getItem("portfolio_chat_history");
     if (savedChat) {
-      setTimeout(() => setMessages(JSON.parse(savedChat)), 0);
-    } else {
-      const welcomeMsg = {
-        id: "welcome",
-        sender: "assistant",
-        text: t.ai_welcome,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        actions: [
-          { label: t.ai_sug_1, type: "text", value: t.ai_sug_1 },
-          { label: t.ai_sug_2, type: "download", url: "/assets/Prathamesh_Bhagwat_Resume.pdf" }
-        ]
-      };
-      setTimeout(() => setMessages([welcomeMsg]), 0);
+      try {
+        const parsed = JSON.parse(savedChat);
+        // If history contains only connection errors from past bugs, clear them out
+        const hasOnlyErrors = Array.isArray(parsed) && parsed.every(m => m.id?.startsWith("err-msg") || m.text === t.ai_error_connection);
+        if (hasOnlyErrors || !Array.isArray(parsed) || parsed.length === 0) {
+          localStorage.removeItem("portfolio_chat_history");
+        } else {
+          setTimeout(() => setMessages(parsed), 0);
+          return;
+        }
+      } catch (e) {
+        localStorage.removeItem("portfolio_chat_history");
+      }
     }
-  }, [lang, t.ai_welcome, t.ai_sug_1, t.ai_sug_2]);
+
+    const welcomeMsg = {
+      id: "welcome",
+      sender: "assistant",
+      text: t.ai_welcome,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      actions: [
+        { label: t.ai_sug_1, type: "text", value: t.ai_sug_1 },
+        { label: t.ai_sug_2, type: "download", url: "/assets/Prathamesh_Bhagwat_Resume.pdf" }
+      ]
+    };
+    setTimeout(() => setMessages([welcomeMsg]), 0);
+  }, [lang, t.ai_welcome, t.ai_sug_1, t.ai_sug_2, t.ai_error_connection]);
 
   // Save chat to localStorage on change
   useEffect(() => {
@@ -212,7 +277,26 @@ export default function ChatWindow({ onClose }) {
       if (window.innerWidth <= 480 && onClose) {
         onClose();
       }
-      smoothScrollTo(action.target, { offset: -80 });
+      // Target selector normalization for different model aliases
+      const targetMap = {
+        "#projects": "#project",
+        "#project": "#project",
+        "#toolbox": "#skills",
+        "#skills": "#skills",
+        "#timeline": "#education",
+        "#education": "#education",
+        "#certifications": "#certificates",
+        "#certificate": "#certificates",
+        "#certificates": "#certificates",
+        "#hero": "#home",
+        "#home": "#home",
+        "#about": "#about",
+        "#contact": "#contact",
+        "#experience": "#experience"
+      };
+      const rawTarget = (action.target || "").trim();
+      const normalizedTarget = targetMap[rawTarget.toLowerCase()] || rawTarget;
+      smoothScrollTo(normalizedTarget, { offset: -80 });
     } else if (action.type === "download") {
       const link = document.createElement("a");
       link.href = action.url;
@@ -229,7 +313,7 @@ export default function ChatWindow({ onClose }) {
 
   const handleSendMessage = useCallback(async (textToSend) => {
     const text = (textToSend || inputVal).trim();
-    if (!text) return;
+    if (!text || isTyping) return;
 
     if (!textToSend) setInputVal("");
 
@@ -262,10 +346,10 @@ export default function ChatWindow({ onClose }) {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       
-      // Accumulate streaming text in a ref to avoid setState on every chunk
       let accumulatedText = "";
       let incomingActions = [];
       let pendingRaf = null;
+      let sseBuffer = "";
       
       const streamMsgId = `stream-msg-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
       
@@ -279,15 +363,19 @@ export default function ChatWindow({ onClose }) {
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ]);
-      
-      setIsTyping(false);
 
-      // Throttled flush: only call setMessages at RAF frequency, not per-chunk
       const flushToState = () => {
         const currentText = accumulatedText;
+        const currentActions = incomingActions;
         setMessages((prev) =>
           prev.map((msg) =>
-            msg.id === streamMsgId ? { ...msg, text: currentText } : msg
+            msg.id === streamMsgId
+              ? { 
+                  ...msg, 
+                  text: currentText, 
+                  ...(currentActions.length > 0 ? { actions: currentActions } : {}) 
+                }
+              : msg
           )
         );
         pendingRaf = null;
@@ -296,39 +384,34 @@ export default function ChatWindow({ onClose }) {
       while (true) {
         const { value, done } = await reader.read();
         if (done) {
-          // Final flush on stream end
           if (pendingRaf) cancelAnimationFrame(pendingRaf);
           flushToState();
           break;
         }
 
-        const chunkStr = decoder.decode(value);
-        const lines = chunkStr.split("\n\n");
-        
+        sseBuffer += decoder.decode(value, { stream: true });
+        const lines = sseBuffer.split("\n");
+        sseBuffer = lines.pop() || "";
+
         for (const line of lines) {
-          if (line.startsWith("data: ")) {
-            const dataStr = line.slice(6).trim();
-            if (!dataStr) continue;
-            
-            try {
-              const data = JSON.parse(dataStr);
-              if (data.type === "text") {
-                accumulatedText += data.content;
-                // Schedule a RAF flush only if one isn't already pending
-                if (!pendingRaf) {
-                  pendingRaf = requestAnimationFrame(flushToState);
-                }
-              } else if (data.type === "actions") {
-                incomingActions = data.actions;
-                setMessages((prev) =>
-                  prev.map((msg) =>
-                    msg.id === streamMsgId ? { ...msg, actions: incomingActions } : msg
-                  )
-                );
+          const cleanLine = line.trim();
+          if (!cleanLine || !cleanLine.startsWith("data: ")) continue;
+          const dataStr = cleanLine.slice(6).trim();
+          if (!dataStr || dataStr === "[DONE]") continue;
+
+          try {
+            const data = JSON.parse(dataStr);
+            if (data.type === "text") {
+              accumulatedText += data.content;
+              if (!pendingRaf) {
+                pendingRaf = requestAnimationFrame(flushToState);
               }
-            } catch (e) {
-              console.error("Error parsing stream chunk:", e);
+            } else if (data.type === "actions") {
+              incomingActions = data.actions;
+              flushToState();
             }
+          } catch (e) {
+            console.error("Error parsing stream chunk:", e);
           }
         }
       }
@@ -344,9 +427,10 @@ export default function ChatWindow({ onClose }) {
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ]);
+    } finally {
       setIsTyping(false);
     }
-  }, [inputVal, messages, settings.language, t.ai_error_connection]);
+  }, [inputVal, isTyping, messages, settings.language, t.ai_error_connection]);
 
   const clearChat = () => {
     stop();
@@ -401,9 +485,9 @@ export default function ChatWindow({ onClose }) {
       {/* Messages */}
       <div className={styles.messageList} onWheel={(e) => e.stopPropagation()}>
         {messages.map((msg) => (
-          <MessageBubble key={msg.id} message={msg} onAction={handleAction} />
+          <MessageBubble key={msg.id} message={msg} onAction={handleAction} isTyping={isTyping} />
         ))}
-        {isTyping && (
+        {isTyping && !messages.some(m => m.sender === "assistant" && m.text === "") && (
           <div className={`${styles.messageWrapper} ${styles.assistantWrapper}`}>
             <div className={`${styles.messageBubble} ${styles.assistantBubble}`}>
               <div className={styles.typingIndicator}>
@@ -424,6 +508,7 @@ export default function ChatWindow({ onClose }) {
             key={idx} 
             className={styles.suggestionChip}
             onClick={() => handleSendMessage(sug)}
+            disabled={isTyping}
           >
             {sug}
           </button>

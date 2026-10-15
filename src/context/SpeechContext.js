@@ -12,15 +12,17 @@ export function useSpeechSynthesis() {
   return context;
 }
 
-// Strip markdown tags to prevent speech synthesis from reading raw formatting tags
+// Strip markdown tags and internal action blocks to prevent speech synthesis from reading raw formatting tags
 function stripMarkdown(text) {
   if (!text) return "";
   return text
+    .replace(/<actions>[\s\S]*?<\/actions>/gi, "") // strip actions tag if any
     .replace(/\*\*([^*]+)\*\*/g, "$1") // bold
     .replace(/\*([^*]+)\*/g, "$1")     // italic
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1") // link labels
     .replace(/#+\s+(.+)/g, "$1")        // headings
     .replace(/-\s+(.+)/g, "$1")        // list dashes
+    .replace(/^\d+\.\s+(.+)/gm, "$1")  // numbered lists
     .replace(/`([^`]+)`/g, "$1")       // inline code block
     .replace(/\n+/g, " ")             // replace newlines with spacing
     .trim();
